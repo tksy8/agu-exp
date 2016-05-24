@@ -3,6 +3,10 @@
 
 <%
     twi.Model model = new twi.Model();
+    String token="";
+    String stoken="";
+    token = request.getParameter("oauth_token");
+    stoken = request.getParameter("oauth_verifier");
 %>
 
 <!DOCTYPE html>
@@ -12,6 +16,13 @@
     <title>Twitter OAuth認証開始</title>
   </head>
   <body>
-    <p><a href="<%=model.getAuth()%>">Twitter OAuth認証開始</a></p>
+      <% if (token==null || stoken==null){ %>
+      <p><a href="<%=model.getAuth()%>">Twitter OAuth認証開始</a></p>
+      <% }else{ %>
+      <dt>Access Token</dt><dd><%=token%></dd>
+      <dt>Token Secret</dt><dd><%=stoken%></dd>
+      <% model.registerToken(token, stoken);
+      model.tweet("授業のアプリのテストです"); %>
+      <% } %>
   </body>
 </html>
