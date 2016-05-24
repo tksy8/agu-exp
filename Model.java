@@ -3,12 +3,13 @@ package twi;
 import oauth.signpost.*;
 import oauth.signpost.basic.*;
 import java.io.*;
+import java.net.*;
 
 
 public class Model {
     private String consumerkey="coa8pATuhe3T2vYOEOIp214EO";
     private String consumerSecret="BSFxbPULnAzVTn0MWvtBOkylaCcGu2lJibZo6utuYXPiITxhas";
-    private String callback="http://127.0.0.1:8080/exp-project/view2.jsp";
+    private String callback="http://127.0.0.1:8080/exp_app/view.jsp";
     private String method = "POST";
     private String urlStr = "https://api.twitter.com/oauth/request_token";
     
@@ -25,9 +26,16 @@ public class Model {
         return provider.retrieveRequestToken(consumer, callback);
     }
     
-    public void getToken(String pin) throws Exception{
-        provider.retrieveAccessToken(consumer, pin);
-        consumer.setTokenWithSecret(consumer.getToken(), consumer.getTokenSecret());
+    public void registerToken(String token, String stoken) throws Exception{
+        consumer.setTokenWithSecret(token, stoken);
+    }
+    
+    public void tweet(String text) throws Exception{
+        text = URLEncoder.encode(text, "UTF-8");
+        URL url = new URL("https://api.twitter.com/1.1/statuses/update.json?status=" + text);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("POST");
+        consumer.sign(connection);
     }
     
 
