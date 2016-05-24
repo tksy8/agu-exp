@@ -8,9 +8,7 @@ import java.io.*;
 public class Model {
     private String consumerkey="coa8pATuhe3T2vYOEOIp214EO";
     private String consumerSecret="BSFxbPULnAzVTn0MWvtBOkylaCcGu2lJibZo6utuYXPiITxhas";
-    private String callback="http://localhost:8080/exp-project/view.jsp";
-    private String oauthToken = ""; // リクエストトークン取得時は利用しない
-    private String oauthTokenSecret = ""; // リクエストトークン取得時は利用しない
+    private String callback="http://127.0.0.1:8080/exp-project/view2.jsp";
     private String method = "POST";
     private String urlStr = "https://api.twitter.com/oauth/request_token";
     
@@ -24,7 +22,7 @@ public class Model {
         "https://api.twitter.com/oauth/authorize");
 
     public String getAuth() throws Exception{
-        return provider.retrieveRequestToken(consumer, OAuth.OUT_OF_BAND);
+        return provider.retrieveRequestToken(consumer, callback);
     }
     
     public void getToken(String pin) throws Exception{
