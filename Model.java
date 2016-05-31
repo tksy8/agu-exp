@@ -14,6 +14,7 @@ import twitter4j.User;
 import twitter4j.conf.ConfigurationBuilder;
 import twitter4j.ResponseList;
 import twitter4j.Paging;
+import twitter4j.auth.AccessToken;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
@@ -46,7 +47,7 @@ public class Model {
     public String rtxt="";
     public String [] pics=new String[5];
     
-    private OAuthConsumer consumer = new DefaultOAuthConsumer(
+    public OAuthConsumer consumer = new DefaultOAuthConsumer(
         "coa8pATuhe3T2vYOEOIp214EO",
         "BSFxbPULnAzVTn0MWvtBOkylaCcGu2lJibZo6utuYXPiITxhas");
     
@@ -69,6 +70,15 @@ public class Model {
         twitter = tf.getInstance();
     }
     
+    public void twi4jAcc(){
+        TwitterFactory factory = new TwitterFactory();
+        AccessToken accessToken = new AccessToken(consumer.getToken(),consumer.getTokenSecret());
+        twitter = factory.getInstance();
+        Twitter twitter = factory.getInstance();
+        twitter.setOAuthConsumer(consumer.getConsumerKey(), consumer.getConsumerSecret());
+        twitter.setOAuthAccessToken(accessToken);
+    }
+    
     public void tweet4(String text) throws Exception{
         Status state = twitter.updateStatus(text);
     }
@@ -81,7 +91,7 @@ public class Model {
         Matcher m;
         Matcher m2;
         String tmp;
-        for (int i=1;i<2;i++){
+        for (int i=1;i<10;i++){
             Paging page = new Paging(i,200);
             myRes = twitter.getUserTimeline(page);
             for (Status state: myRes){
@@ -112,21 +122,26 @@ public class Model {
     
     
     
-    public void printUser() throws Exception{
+    public void printUser() {
         int tmp;
         String stmp="aaa";
         for(int i=0;i<5;i++){
             tmp=0;
             for (int j=0;j<friend.size();j++){
-                if(tmp<fnum.get(j) && Arrays.asList(ranking).contains(friend.get(j))==false){
+                if(tmp<fnum.get(j) && Arrays.asList(ranking).contains(friend.get(j))==false && friend.get(j).length()>3){
                     tmp=fnum.get(j);
                     stmp=friend.get(j);
                 }
             }
             ranking[i]=stmp;
             ranknum[i]=tmp;
+            System.out.println(stmp);
+            try{
             User user = twitter.showUser(stmp);
             pics[i]=user.getProfileImageURL();
+            }catch(Exception e){
+                pics[i]="";
+            }
         }
     }
     
@@ -200,5 +215,8 @@ public class Model {
             System.out.println(key.get(i)+" : "+nums.get(i)+"回");
             rtxt=rtxt+"</br>"+key.get(i)+" : "+nums.get(i)+"回";
         }
+    }
+    public String urlc (String txt) throws Exception{
+        return URLEncoder.encode(txt, "UTF-8");
     }
 }
