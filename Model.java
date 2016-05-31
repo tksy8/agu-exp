@@ -14,6 +14,17 @@ import twitter4j.User;
 import twitter4j.conf.ConfigurationBuilder;
 import twitter4j.ResponseList;
 import twitter4j.Paging;
+import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import org.jdom.input.SAXBuilder;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.Namespace;
+import org.atilika.kuromoji.Tokenizer;
+import org.atilika.kuromoji.Token;
 
 
 
@@ -22,10 +33,18 @@ public class Model {
     private String consumerSecret="BSFxbPULnAzVTn0MWvtBOkylaCcGu2lJibZo6utuYXPiITxhas";
     private String callback="http://127.0.0.1:8080/exp_app/view.jsp";
     private String method = "POST";
+    final private String Y_id= "dj0zaiZpPUx6ZlZsbzF2ck5GVyZzPWNvbnN1bWVyc2VjcmV0Jng9ZmI-";
     private Twitter twitter;
     public ResponseList<Status> myRes;
     public String text="";
-    
+    private List<String> friend=new ArrayList<String>();
+    private List<Integer> fnum=new ArrayList<Integer>();
+    public String [] ranking=new String[5];
+    public int [] ranknum=new int[5];
+    private List<String> words=new ArrayList<String>();
+    private List<Integer> wnum=new ArrayList<Integer>();
+    public String rtxt="";
+    public String [] pics=new String[5];
     
     private OAuthConsumer consumer = new DefaultOAuthConsumer(
         "coa8pATuhe3T2vYOEOIp214EO",
@@ -62,17 +81,52 @@ public class Model {
         Matcher m;
         Matcher m2;
         String tmp;
-        Paging page = new Paging(1,20);
-        myRes = twitter.getUserTimeline(page);
-        for (Status state: myRes){
-            if (state.isRetweet() )
-                continue;
-            tmp=state.getText();
-            m=p.matcher(tmp);
-            tmp=m.replaceAll("");
-            m2=p2.matcher(tmp);
-            tmp=m2.replaceAll("");
-            text = text+"</br>"+tmp;
+        for (int i=1;i<2;i++){
+            Paging page = new Paging(i,200);
+            myRes = twitter.getUserTimeline(page);
+            for (Status state: myRes){
+                if (state.isRetweet() )
+                    continue;
+                tmp=state.getText();
+                m=p.matcher(tmp);
+                if (m.find()){
+                    if (m.group()==null)
+                        continue;
+
+                    if (friend.contains(m.group())){
+                        fnum.set(friend.indexOf(m.group()), fnum.get(friend.indexOf(m.group()))+1);
+
+                    }else{
+                        friend.add(m.group());
+                        fnum.add(1);
+                    }
+                }
+
+                tmp=m.replaceAll("");
+                m2=p2.matcher(tmp);
+                tmp=m2.replaceAll("");
+                text = text+" "+tmp;
+            }
+        }
+    }
+    
+    
+    
+    public void printUser() throws Exception{
+        int tmp;
+        String stmp="aaa";
+        for(int i=0;i<5;i++){
+            tmp=0;
+            for (int j=0;j<friend.size();j++){
+                if(tmp<fnum.get(j) && Arrays.asList(ranking).contains(friend.get(j))==false){
+                    tmp=fnum.get(j);
+                    stmp=friend.get(j);
+                }
+            }
+            ranking[i]=stmp;
+            ranknum[i]=tmp;
+            User user = twitter.showUser(stmp);
+            pics[i]=user.getProfileImageURL();
         }
     }
     
@@ -93,18 +147,58 @@ public class Model {
         consumer.sign(connection);
     }
     
+    public void bagword(String text) throws Exception{
+        String mytext = URLEncoder.encode(text, "UTF-8");
+        URL url = new URL("http://jlp.yahooapis.jp/MAService/V1/parse?"+
+                "results=uniq"+
+                "&appid="+Y_id+
+                "&sentence=" + mytext);
+        Document doc=new SAXBuilder().build(url);
+        Element root = doc.getRootElement();
+        Namespace ns=root.getNamespace();
+        List<Element> wlist=root.getChild("uniq_result",ns).getChild("word_list",ns).getChildren("word",ns);
+        
+        for(Element child : wlist){
+            //words.add(child.getChild("word",ns).getText());
+            System.out.print(child.getChild("surface",ns).getText()+"    ");
+            System.out.println(child.getChild("count",ns).getText());
+        }
+    }
+    
+    public void kaiseki(String txt){
+        ArrayList<Integer> nums = new ArrayList<Integer>();
+	ArrayList<String> key = new ArrayList<String>();
+        int page;
+        Tokenizer tokenize=Tokenizer.builder().build();
+        List<Token> tokens=tokenize.tokenize(txt);
+        for (Token token : tokens) {
+            String toke = token.getSurfaceForm();
+            if (!key.contains(toke)){
+                    key.add(toke);
+                    nums.add(1);
+            }
+            else{
+                page = key.indexOf(toke);
+                nums.set(page, nums.get(page)+1);
+            }
+        }
+        for (int i=0; i<key.size()-1; i++){
+            for (int j=key.size()-1; j>i; j--){
+                if (nums.get(j-1) < nums.get(j)){
+                    int temp=nums.get(j-1);
+                    nums.set(j-1, nums.get(j));
+                    nums.set(j, temp);
 
-    public void execute() throws Exception{
-        String authUrl = provider.retrieveRequestToken(consumer, OAuth.OUT_OF_BAND);
-        System.out.println("このURLにアクセスし、表示されるPINを入力してください。");
-        System.out.println(authUrl);
-        System.out.print("PIN:");
-
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String pin = br.readLine();
-
-        provider.retrieveAccessToken(consumer, pin);
-        System.out.println("Access token: " + consumer.getToken());
-        System.out.println("Token secret: " + consumer.getTokenSecret());
+                    String stemp=key.get(j-1);
+                    key.set(j-1, key.get(j));
+                    key.set(j, stemp);
+                }
+            }
+        }
+        
+        for (int i=0; i<key.size(); i++){
+            System.out.println(key.get(i)+" : "+nums.get(i)+"回");
+            rtxt=rtxt+"</br>"+key.get(i)+" : "+nums.get(i)+"回";
+        }
     }
 }
