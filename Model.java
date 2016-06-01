@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Date;
+import java.util.Calendar;
 import org.jdom.input.SAXBuilder;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -46,6 +48,13 @@ public class Model {
     private List<Integer> wnum=new ArrayList<Integer>();
     public String rtxt="";
     public String [] pics=new String[5];
+    private double ronryalone;
+    public int [] timetwi=new int[24];
+    
+    public Model(){
+        for (int i=0;i<24;i++)
+           timetwi[i]=0; 
+    }
     
     public OAuthConsumer consumer = new DefaultOAuthConsumer(
         "coa8pATuhe3T2vYOEOIp214EO",
@@ -91,15 +100,24 @@ public class Model {
         Matcher m;
         Matcher m2;
         String tmp;
+        double alltwi=0, repnum=0;
         for (int i=1;i<10;i++){
             Paging page = new Paging(i,200);
             myRes = twitter.getUserTimeline(page);
             for (Status state: myRes){
+                Date date = new Date();
+                Calendar cal = Calendar.getInstance();
                 if (state.isRetweet() )
                     continue;
+                date=state.getCreatedAt();
+                cal.setTime(date);
+                timetwi[date.getHours()]+=1;
+                
                 tmp=state.getText();
                 m=p.matcher(tmp);
+                alltwi+=1;
                 if (m.find()){
+                    repnum+=1;
                     if (m.group()==null)
                         continue;
 
@@ -115,9 +133,10 @@ public class Model {
                 tmp=m.replaceAll("");
                 m2=p2.matcher(tmp);
                 tmp=m2.replaceAll("");
-                text = text+" "+tmp;
+                text = text+"。"+tmp;
             }
         }
+        ronryalone=alltwi/repnum;
     }
     
     
@@ -135,7 +154,6 @@ public class Model {
             }
             ranking[i]=stmp;
             ranknum[i]=tmp;
-            System.out.println(stmp);
             try{
             User user = twitter.showUser(stmp);
             pics[i]=user.getProfileImageURL();
@@ -212,11 +230,14 @@ public class Model {
         }
         
         for (int i=0; i<key.size(); i++){
-            System.out.println(key.get(i)+" : "+nums.get(i)+"回");
             rtxt=rtxt+"</br>"+key.get(i)+" : "+nums.get(i)+"回";
         }
     }
     public String urlc (String txt) throws Exception{
         return URLEncoder.encode(txt, "UTF-8");
+    }
+    
+    public String getBotti(){
+        return String.format("%.2f",ronryalone*10);
     }
 }
