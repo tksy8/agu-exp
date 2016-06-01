@@ -50,7 +50,16 @@
           <input name="secret" value="<%=model.consumer.getTokenSecret()%>">
           <p><input type="submit" value="送信する"></p>
       </form>
-      <%=model.rtxt %>
+          あなたのぼっち度: <%=model.getBotti()%><br>
+      <% for(int i=0;i<24;i++){ %>
+      <%=i+1%>時：
+      <svg viewBox="0 0 300 8">
+      <title>tweet数！</title>
+    <desc>circle要素の属性値が同じ点に注目</desc>
+    <rect x="2" y="2" width="<%=model.timetwi[i]/2%>" height="5" stroke-width="1" stroke="red" fill="pink"/>
+    </svg>
+
+      <% } %>
       <% } %>
   </body>
 </html>
