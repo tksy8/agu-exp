@@ -22,12 +22,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Date;
 import java.util.Calendar;
-import org.jdom.input.SAXBuilder;
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.Namespace;
 import org.atilika.kuromoji.Tokenizer;
 import org.atilika.kuromoji.Token;
+
 
 
 
@@ -136,7 +133,7 @@ public class Model {
                 text = text+"。"+tmp;
             }
         }
-        ronryalone=alltwi/repnum;
+        ronryalone=1-repnum/alltwi;
     }
     
     
@@ -155,7 +152,7 @@ public class Model {
             ranking[i]=stmp;
             ranknum[i]=tmp;
             try{
-            User user = twitter.showUser(stmp);
+            User user = twitter.showUser(stmp.replace("@",""));
             pics[i]=user.getProfileImageURL();
             }catch(Exception e){
                 pics[i]="";
@@ -180,32 +177,41 @@ public class Model {
         consumer.sign(connection);
     }
     
-    public void bagword(String text) throws Exception{
-        String mytext = URLEncoder.encode(text, "UTF-8");
-        URL url = new URL("http://jlp.yahooapis.jp/MAService/V1/parse?"+
-                "results=uniq"+
-                "&appid="+Y_id+
-                "&sentence=" + mytext);
-        Document doc=new SAXBuilder().build(url);
-        Element root = doc.getRootElement();
-        Namespace ns=root.getNamespace();
-        List<Element> wlist=root.getChild("uniq_result",ns).getChild("word_list",ns).getChildren("word",ns);
-        
-        for(Element child : wlist){
-            //words.add(child.getChild("word",ns).getText());
-            System.out.print(child.getChild("surface",ns).getText()+"    ");
-            System.out.println(child.getChild("count",ns).getText());
-        }
-    }
-    
     public void kaiseki(String txt){
         ArrayList<Integer> nums = new ArrayList<Integer>();
 	ArrayList<String> key = new ArrayList<String>();
-        int page;
+        String kigou="^[(´°・`｀；.。、,)（）]*$";
+        Pattern p=Pattern.compile(kigou);
+        Matcher m;
+        int page,flag=0;
+        String tmp="",toke="";
         Tokenizer tokenize=Tokenizer.builder().build();
         List<Token> tokens=tokenize.tokenize(txt);
         for (Token token : tokens) {
-            String toke = token.getSurfaceForm();
+            if (!token.getAllFeaturesArray()[0].equals("名詞") && !tmp.equals("")){
+                toke=tmp;
+                tmp="";
+                toke=toke.replace("ｗ", "");
+                if (toke.length()<3){
+                    continue;
+                }
+                m=p.matcher(toke);
+                if (m.find())
+                    continue;
+            }
+            else if (!token.getAllFeaturesArray()[0].equals("名詞") && tmp.equals("")){
+                continue;
+            }
+            else if (token.getAllFeaturesArray()[0].equals("名詞") && tmp.equals("")){
+                tmp=token.getSurfaceForm();
+                continue;
+            }
+            else if (token.getAllFeaturesArray()[0].equals("名詞") && !tmp.equals("")){
+                tmp=tmp+token.getSurfaceForm();
+                continue;
+            }
+            
+            
             if (!key.contains(toke)){
                     key.add(toke);
                     nums.add(1);
