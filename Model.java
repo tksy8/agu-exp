@@ -47,7 +47,7 @@ public class Model {
     public String [] pics=new String[5];
     private double ronryalone;
     public int [] timetwi=new int[24];
-    public double twipday,twimean;
+    private double twipday,twimean;
     
     public Model(){
         for (int i=0;i<24;i++)
@@ -149,7 +149,7 @@ public class Model {
         }
         twipday=1.0*alltwi/getDiffDay(now,old);
         twimean=twilength/alltwi;
-        ronryalone=(alltwi-repnum)/alltwi*1.0;
+        ronryalone=(alltwi-repnum)/alltwi*100.0;
     }
     
     
@@ -260,11 +260,33 @@ public class Model {
     }
     
     public String getBotti(){
-        return String.format("%.2f",ronryalone*10);
+        return String.format("%.2f",ronryalone);
+    }
+    public String getTwimean(){
+        return String.format("%.2f",twimean);
+    }
+    public String getTwipday(){
+        return  String.format("%.2f",twipday);
     }
     private int getDiffDay(Calendar cal1,Calendar cal2){
         long diffTime = cal1.getTimeInMillis() - cal2.getTimeInMillis();
         long timetoday = 1000*60*60*24;
         return (int)(diffTime / timetoday);
+    }
+    public String botype(){
+        String rtSt="";
+        if (ronryalone>95)
+            rtSt="パーフェクトぼっち";
+        else if(ronryalone>90)
+            rtSt="リアルぼっち";
+        else if(ronryalone>85)
+            rtSt="ついったーぼっち";
+        else if(ronryalone>60)
+            rtSt="一般人";
+        else if(ronryalone>40)
+            rtSt="会話好き";
+        else
+            rtSt="お話好き";
+        return rtSt;
     }
 }
