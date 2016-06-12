@@ -16,10 +16,15 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Twitter OAuth認証開始</title>
-        <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+        <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+        <script src="d3.layout.cloud.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
         <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" >
+        <link href="bootstrap.css" rel="stylesheet">
+        <link href="bootstrap-responsive.css" rel="stylesheet">
+        <link href="style.css" rel="stylesheet"> 
     </head>
     <body>
         <% if (token == null || stoken == null) {%>
@@ -44,6 +49,10 @@
         model.twi4j();
         model.getTimeline();
         model.printUser();%>
+
+
+
+
     <div id="main" class="container">
         <div class="row">
             <div class="col-md-8 col-md-push-4">
@@ -72,7 +81,87 @@
                     <input name="secret" value="<%=model.consumer.getTokenSecret()%>">
                     <p><input type="submit" value="送信する"></p>
                 </form>
-
+                <br><br>
+                <div class="main_column">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h2>★ツイート時間帯の傾向★</h2>
+                            <canvas id="twiTime" height="500" width="1000"></canvas><br>
+                            <script>
+                                var ctx = document.getElementById("twiTime");
+                                var twiTime = new Chart(ctx, {
+                                    type: 'bar',
+                                    data: {
+                                        labels: ["1時", "2時", "3時", "4時", "5時", "6時", "7時", "8時", "9時", "10時", "11時", "12時", "13時", "14時", "15時", "16時", "17時", "18時", "19時", "20時", "21時", "22時", "23時", "24時"], //x軸のラベル
+                                        datasets: [{
+                                                label: "あなたのツイート数",
+                                                data: [<%=model.timetwi[16]%>, <%=model.timetwi[17]%>, <%=model.timetwi[18]%>, <%=model.timetwi[19]%>, <%=model.timetwi[20]%>, <%=model.timetwi[21]%>, <%=model.timetwi[22]%>, <%=model.timetwi[23]%>,<%=model.timetwi[0]%>, <%=model.timetwi[1]%>,<%=model.timetwi[2]%>,<%=model.timetwi[3]%>,<%=model.timetwi[4]%>, <%=model.timetwi[5]%>, <%=model.timetwi[6]%>, <%=model.timetwi[7]%>, <%=model.timetwi[8]%>, <%=model.timetwi[9]%>, <%=model.timetwi[10]%>, <%=model.timetwi[11]%>, <%=model.timetwi[12]%>, <%=model.timetwi[13]%>, <%=model.timetwi[14]%>, <%=model.timetwi[15]%>],
+                                                backgroundColor: [
+                                                    'rgba(255, 99, 132, 0.2)',
+                                                    'rgba(54, 162, 235, 0.2)',
+                                                    'rgba(255, 206, 86, 0.2)',
+                                                    'rgba(75, 192, 192, 0.2)',
+                                                    'rgba(153, 102, 255, 0.2)',
+                                                    'rgba(255, 159, 64, 0.2)',
+                                                    'rgba(255, 99, 132, 0.2)',
+                                                    'rgba(54, 162, 235, 0.2)',
+                                                    'rgba(255, 206, 86, 0.2)',
+                                                    'rgba(75, 192, 192, 0.2)',
+                                                    'rgba(153, 102, 255, 0.2)',
+                                                    'rgba(255, 159, 64, 0.2)',
+                                                    'rgba(255, 99, 132, 0.2)',
+                                                    'rgba(54, 162, 235, 0.2)',
+                                                    'rgba(255, 206, 86, 0.2)',
+                                                    'rgba(75, 192, 192, 0.2)',
+                                                    'rgba(153, 102, 255, 0.2)',
+                                                    'rgba(255, 159, 64, 0.2)',
+                                                    'rgba(255, 99, 132, 0.2)',
+                                                    'rgba(54, 162, 235, 0.2)',
+                                                    'rgba(255, 206, 86, 0.2)',
+                                                    'rgba(75, 192, 192, 0.2)',
+                                                    'rgba(153, 102, 255, 0.2)',
+                                                    'rgba(255, 159, 64, 0.2)'
+                                                ],
+                                                borderColor: [
+                                                    'rgba(255,99,132,1)',
+                                                    'rgba(54, 162, 235, 1)',
+                                                    'rgba(255, 206, 86, 1)',
+                                                    'rgba(75, 192, 192, 1)',
+                                                    'rgba(153, 102, 255, 1)',
+                                                    'rgba(255, 159, 64, 1)',
+                                                    'rgba(255,99,132,1)',
+                                                    'rgba(54, 162, 235, 1)',
+                                                    'rgba(255, 206, 86, 1)',
+                                                    'rgba(75, 192, 192, 1)',
+                                                    'rgba(153, 102, 255, 1)',
+                                                    'rgba(255, 159, 64, 1)',
+                                                    'rgba(255,99,132,1)',
+                                                    'rgba(54, 162, 235, 1)',
+                                                    'rgba(255, 206, 86, 1)',
+                                                    'rgba(75, 192, 192, 1)',
+                                                    'rgba(153, 102, 255, 1)',
+                                                    'rgba(255, 159, 64, 1)',
+                                                    'rgba(255,99,132,1)',
+                                                    'rgba(54, 162, 235, 1)',
+                                                    'rgba(255, 206, 86, 1)',
+                                                    'rgba(75, 192, 192, 1)',
+                                                    'rgba(153, 102, 255, 1)',
+                                                    'rgba(255, 159, 64, 1)'
+                                                ],
+                                                borderWidth: 1
+                                            }]
+                                    },
+                                    options: {
+                                        animation: {
+                                            duration: 8000
+                                        }
+                                    }
+                                });
+                            </script>
+                        </div>
+                    </div>
+                </div>
+                <br><br>
                 <div class="main_column">
                     <div class="row">
                         <div class="col-md-12">
@@ -148,6 +237,11 @@
                                                     "#FF6384"
                                                 ]
                                             }]
+                                    },
+                                    options: {
+                                        animation: {
+                                            duration: 4000
+                                        }
                                     }
                                 });
                             </script>
@@ -214,89 +308,7 @@
                 </script>
                 --%>
                 <br><br>
-                <div class="main_column">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h2>★ツイート時間帯の傾向★</h2>
-                            <canvas id="twiTime" height="500" width="1000"></canvas><br>
-                            <script>
-                                var ctx = document.getElementById("twiTime");
-                                var twiTime = new Chart(ctx, {
-                                    type: 'bar',
-                                    data: {
-                                        labels: ["1時", "2時", "3時", "4時", "5時", "6時", "7時", "8時", "9時", "10時", "11時", "12時", "13時", "14時", "15時", "16時", "17時", "18時", "19時", "20時", "21時", "22時", "23時", "24時"], //x軸のラベル
-                                        datasets: [{
-                                                label: "あなたのツイート数",
-                                                data: [<%=model.timetwi[0] / 2%>,<%=model.timetwi[1] / 2%>,<%=model.timetwi[2] / 2%>,<%=model.timetwi[3] / 2%>,<%=model.timetwi[4] / 2%>, <%=model.timetwi[5] / 2%>, <%=model.timetwi[6] / 2%>, <%=model.timetwi[7] / 2%>, <%=model.timetwi[8] / 2%>, <%=model.timetwi[9] / 2%>, <%=model.timetwi[10] / 2%>, <%=model.timetwi[11] / 2%>, <%=model.timetwi[12] / 2%>, <%=model.timetwi[13] / 2%>, <%=model.timetwi[14] / 2%>, <%=model.timetwi[15] / 2%>, <%=model.timetwi[16] / 2%>, <%=model.timetwi[17] / 2%>, <%=model.timetwi[18] / 2%>, <%=model.timetwi[17] / 2%>, <%=model.timetwi[18] / 2%>, <%=model.timetwi[19] / 2%>, <%=model.timetwi[20] / 2%>, <%=model.timetwi[21] / 2%>, <%=model.timetwi[22] / 2%>, <%=model.timetwi[23] / 2%>],
-                                                backgroundColor: [
-                                                    'rgba(255, 99, 132, 0.2)',
-                                                    'rgba(54, 162, 235, 0.2)',
-                                                    'rgba(255, 206, 86, 0.2)',
-                                                    'rgba(75, 192, 192, 0.2)',
-                                                    'rgba(153, 102, 255, 0.2)',
-                                                    'rgba(255, 159, 64, 0.2)',
-                                                    'rgba(255, 99, 132, 0.2)',
-                                                    'rgba(54, 162, 235, 0.2)',
-                                                    'rgba(255, 206, 86, 0.2)',
-                                                    'rgba(75, 192, 192, 0.2)',
-                                                    'rgba(153, 102, 255, 0.2)',
-                                                    'rgba(255, 159, 64, 0.2)',
-                                                    'rgba(255, 99, 132, 0.2)',
-                                                    'rgba(54, 162, 235, 0.2)',
-                                                    'rgba(255, 206, 86, 0.2)',
-                                                    'rgba(75, 192, 192, 0.2)',
-                                                    'rgba(153, 102, 255, 0.2)',
-                                                    'rgba(255, 159, 64, 0.2)',
-                                                    'rgba(255, 99, 132, 0.2)',
-                                                    'rgba(54, 162, 235, 0.2)',
-                                                    'rgba(255, 206, 86, 0.2)',
-                                                    'rgba(75, 192, 192, 0.2)',
-                                                    'rgba(153, 102, 255, 0.2)',
-                                                    'rgba(255, 159, 64, 0.2)'
-                                                ],
-                                                borderColor: [
-                                                    'rgba(255,99,132,1)',
-                                                    'rgba(54, 162, 235, 1)',
-                                                    'rgba(255, 206, 86, 1)',
-                                                    'rgba(75, 192, 192, 1)',
-                                                    'rgba(153, 102, 255, 1)',
-                                                    'rgba(255, 159, 64, 1)',
-                                                    'rgba(255,99,132,1)',
-                                                    'rgba(54, 162, 235, 1)',
-                                                    'rgba(255, 206, 86, 1)',
-                                                    'rgba(75, 192, 192, 1)',
-                                                    'rgba(153, 102, 255, 1)',
-                                                    'rgba(255, 159, 64, 1)',
-                                                    'rgba(255,99,132,1)',
-                                                    'rgba(54, 162, 235, 1)',
-                                                    'rgba(255, 206, 86, 1)',
-                                                    'rgba(75, 192, 192, 1)',
-                                                    'rgba(153, 102, 255, 1)',
-                                                    'rgba(255, 159, 64, 1)',
-                                                    'rgba(255,99,132,1)',
-                                                    'rgba(54, 162, 235, 1)',
-                                                    'rgba(255, 206, 86, 1)',
-                                                    'rgba(75, 192, 192, 1)',
-                                                    'rgba(153, 102, 255, 1)',
-                                                    'rgba(255, 159, 64, 1)'
-                                                ],
-                                                borderWidth: 1
-                                            }]
-                                    },
-                                    options: {
-                                        scales: {
-                                            yAxes: [{
-                                                    ticks: {
-                                                        beginAtZero: true
-                                                    }
-                                                }]
-                                        }
-                                    }
-                                });
-                            </script>
-                        </div>
-                    </div>
-                </div>
+
                 <br><br>
                 <div class="main_column">
                     <div class="row">
@@ -327,13 +339,75 @@
                                                     "#ffb3da"
                                                 ]
                                             }]
+                                    },
+                                    options: {
+                                        animation: {
+                                            duration: 12000
+                                        }
                                     }
                                 });
                             </script>
                         </div>
                     </div>
                 </div>
+                <br><br>
+                <div class="main_column">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h2>★ワードクラウド★</h2>
+                            <script>
+                                var fill = d3.scale.category20();
 
+                                var w = $(window).width(), //横
+                                        h = $(window).height(); //縦
+
+                                var layout = d3.layout.cloud()
+                                        .size([500, 500])
+                                        .words([
+                                            "Hello", "world", "normally", "you", "want", "more", "words",
+                                            "than", "this"].map(function (d) {
+                                            return {text: d, size: 10 + Math.random() * 90, test: "haha"};
+                                        }))
+                                        .padding(5)
+                                        .rotate(function () {
+                                            return ~~(Math.random() * 2) * 90;
+                                        })
+                                        .font("Impact")
+                                        .fontSize(function (d) {
+                                            return d.size;
+                                        })
+                                        .on("end", draw);
+
+                                layout.start();
+
+                                function draw(words) {
+                                    d3.select("body").append("svg")
+                                            .attr("width", layout.size()[0])
+                                            .attr("height", layout.size()[1])
+                                            .append("g")
+                                            .attr("transform", "translate(" + layout.size()[0] / 2 + "," + layout.size()[1] / 2 + ")")
+                                            .selectAll("text")
+                                            .data(words)
+                                            .enter().append("text")
+                                            .style("font-size", function (d) {
+                                                return d.size + "px";
+                                            })
+                                            .style("font-family", "Impact")
+                                            .style("fill", function (d, i) {
+                                                return fill(i);
+                                            })
+                                            .attr("text-anchor", "middle")
+                                            .attr("transform", function (d,w,h) {
+                                                return "translate(" + [w/2+d.x, h/2+d.y] + ")rotate(" + d.rotate + ")";
+                                            })
+                                            .text(function (d) {
+                                                return d.text;
+                                            });
+                                }
+                            </script>
+                        </div>
+                    </div>
+                </div>
                 <%--時刻別ツイート数横棒グラフ跡地
                       <% for(int i=0;i<24;i++){ %>
                       <%=i+1%>時：
