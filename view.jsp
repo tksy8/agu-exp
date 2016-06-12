@@ -20,6 +20,9 @@
         <script src="d3.layout.cloud.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script type="text/javascript" src="jquery.js"></script>
+        <script type="text/javascript" src="nicoscreen.js"></script>
+
 
         <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" >
         <link href="bootstrap.css" rel="stylesheet">
@@ -53,7 +56,7 @@
 
 
 
-    <div id="main" class="container">
+    <div  id="nicoscreen" style="width:sW;height:sH">
         <div class="row">
             <div class="col-md-8 col-md-push-4">
                 <div class="main_column">
@@ -240,7 +243,7 @@
                                     },
                                     options: {
                                         animation: {
-                                            duration: 4000
+                                            duration: 12000
                                         }
                                     }
                                 });
@@ -248,67 +251,6 @@
                         </div>
                     </div>
                 </div>
-                <%--
-                <script>
-                    var dataset = [
-                        {graphLegend: "", graphValue: 63, graphColor: "darkblue"},
-                        {graphLegend: "", graphValue: 37, graphColor: "transparent"}
-                    ];
-                    var width = 960,
-                            height = 500,
-                            radius = Math.min(width, height) / 2;
-                    var arc = d3.svg.arc()
-                            .outerRadius(radius - 10)
-                            .innerRadius(0);
-                    var pie = d3.layout.pie()
-                            .sort(null)
-                            .value(function (d) {
-                                return d.graphValue;
-                            });
-                    var tooltip = d3.select("body")
-                            .append("div")
-                            .style("position", "absolute")
-                            .style("z-index", "20")
-                            .style("visibility", "hidden");
-                    var svg = d3.select("body").append("svg")
-                            .attr("width", width)
-                            .attr("height", height)
-                            .append("g")
-                            .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
-                    var g = svg.selectAll(".arc")
-                            .data(pie(dataset))
-                            .enter().append("g")
-                    g.append("path")
-                            .attr("d", arc)
-                            .style("fill", function (d) {
-                                return d.data.graphColor;
-                            })
-                            // アニメーション効果
-                            .transition()
-                            .duration(1000) // 1秒間でアニメーションさせる
-                            .attrTween("d", function (d) {
-                                var interpolate = d3.interpolate(
-                                        {startAngle: 0, endAngle: 0},
-                                        {startAngle: d.startAngle, endAngle: d.endAngle}
-                                );
-                                return function (t) {
-                                    return arc(interpolate(t));
-                                }
-                            });
-
-                    g.append("text")
-                            .attr("transform", function (d) {
-                                return "translate(" + arc.centroid(d) + ")";
-                            })
-                            .attr("dy", ".35em")
-                            .style("text-anchor", "middle")
-                            .text(function (d) {
-                                return d.data.graphLegend;
-                            });
-                </script>
-                --%>
-                <br><br>
-
                 <br><br>
                 <div class="main_column">
                     <div class="row">
@@ -342,7 +284,7 @@
                                     },
                                     options: {
                                         animation: {
-                                            duration: 12000
+                                            duration: 16000
                                         }
                                     }
                                 });
@@ -354,12 +296,61 @@
                 <div class="main_column">
                     <div class="row">
                         <div class="col-md-12">
+                            <h2>★あなたの発言★</h2>
+                            <script type="text/javascript">
+                                getWindowSize();
+
+                                function getWindowSize() {
+                                    var sW, sH, s;
+                                    sW = window.innerWidth;
+                                    sH = window.innerHeight;
+
+                                    s = "横幅 = " + sW + " / 高さ = " + sH;
+
+                                    document.getElementById("WinSize").innerHTML = s;
+                                }
+                            </script>
+
+                            <script type="text/javascript">
+
+                                var obj = {
+                                    "base": {
+                                        color: "white",
+                                        speed: "normal",
+                                        interval: "normal",
+                                        font_size: "30px",
+                                        loop: true
+
+                                    },
+                                    "comments": [
+                                        "ワロスｗｗｗｗｗ",
+                                        "ｗｗｗｗｗ",
+                                        "かわいい",
+                                        "(*´д`*)はぁはぁ",
+                                        "なんだこれｗｗｗ",
+                                        "ねこかわゆす"
+
+
+
+                                    ]
+
+                                };
+
+                                nicoscreen.set(obj);
+                                nicoscreen.start();
+
+                            </script>
+
+                        </div>
+                    </div>
+                </div>
+                <br><br>
+                <div class="main_column">
+                    <div class="row">
+                        <div class="col-md-12">
                             <h2>★ワードクラウド★</h2>
                             <script>
                                 var fill = d3.scale.category20();
-
-                                var w = $(window).width(), //横
-                                        h = $(window).height(); //縦
 
                                 var layout = d3.layout.cloud()
                                         .size([500, 500])
@@ -397,8 +388,8 @@
                                                 return fill(i);
                                             })
                                             .attr("text-anchor", "middle")
-                                            .attr("transform", function (d,w,h) {
-                                                return "translate(" + [w/2+d.x, h/2+d.y] + ")rotate(" + d.rotate + ")";
+                                            .attr("transform", function (d) {
+                                                return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
                                             })
                                             .text(function (d) {
                                                 return d.text;
