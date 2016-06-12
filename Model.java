@@ -47,6 +47,7 @@ public class Model {
     public String [] pics=new String[5];
     private double ronryalone;
     public int [] timetwi=new int[24];
+    public double twipday,twimean;
     
     public Model(){
         for (int i=0;i<24;i++)
@@ -97,11 +98,20 @@ public class Model {
         Matcher m;
         Matcher m2;
         String tmp;
+        int flag=0;
+        Status laststate=null;
+        double twilength=0;
+        
+        Calendar now=Calendar.getInstance(), old=Calendar.getInstance();
         double alltwi=0, repnum=0;
         for (int i=1;i<10;i++){
             Paging page = new Paging(i,200);
             myRes = twitter.getUserTimeline(page);
             for (Status state: myRes){
+                if(flag==0){
+                    flag=1;
+                    now.setTime(state.getCreatedAt());
+                }
                 Date date = new Date();
                 Calendar cal = Calendar.getInstance();
                 if (state.isRetweet() )
@@ -113,7 +123,9 @@ public class Model {
                 tmp=state.getText();
                 m=p.matcher(tmp);
                 alltwi+=1;
+                twilength+=tmp.length();
                 if (m.find()){
+                    
                     repnum+=1;
                     if (m.group()==null)
                         continue;
@@ -131,9 +143,13 @@ public class Model {
                 m2=p2.matcher(tmp);
                 tmp=m2.replaceAll("");
                 text = text+"。"+tmp;
+                laststate=state;
             }
+            now.setTime(laststate.getCreatedAt());
         }
-        ronryalone=1-repnum/alltwi;
+        twipday=1.0*alltwi/getDiffDay(now,old);
+        twimean=twilength/alltwi;
+        ronryalone=(alltwi-repnum)/alltwi*1.0;
     }
     
     
@@ -245,5 +261,10 @@ public class Model {
     
     public String getBotti(){
         return String.format("%.2f",ronryalone*10);
+    }
+    private int getDiffDay(Calendar cal1,Calendar cal2){
+        long diffTime = cal1.getTimeInMillis() - cal2.getTimeInMillis();
+        long timetoday = 1000*60*60*24;
+        return (int)(diffTime / timetoday);
     }
 }
