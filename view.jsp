@@ -31,12 +31,14 @@
                 background: #ffffff;
                 padding: 10px;
                 text-align: center;
-                border: 1px solid #cccccc;
+                border-top-left-radius: 1px;
                 margin: 30px auto;
             }
             .side{
-                width: 300px;
-                float: left;
+                padding: 20px;
+                background: #8fbc8f;
+                text-align: center;
+                margin: 30px auto;
             }
         </style>
     </head>
@@ -61,12 +63,12 @@
                 model.twi4j();
                 model.getTimeline();
                 model.printUser();%>
-        <div id="nicoscreen" style="width:sW;height:sH">
-            <div class="side">
-                <h2>
+        <div class="side">
+            <h2>
                 うめつい　
-                </h2>
-            </div>
+            </h2>
+        </div>
+        <div id="nicoscreen" style="width:sW;height:sH;border: white;">
 
             <div class="col-md-12">
                 <h2>★あなたと仲の良いユーザーランキング★</h2>
@@ -78,18 +80,9 @@
                     <%=model.ranking[i] + "      "%>
                     Score：<%=model.ranknum[i]%><br></font>
                     <% }
-                    model.kaiseki(model.text);%>
+                        model.kaiseki(model.text);%>
                 </div>
-                <form action="example.cgi">
-                    <p><input type="submit" value="結果をツイートする！"></p>
-                </form>
             </div>
-
-            <form action="http://127.0.0.1:8080/exp_app/view.jsp" method="get">
-                <p>ついーとする<input type="text" name="tweeet"></p>
-                <input name="secret" value="<%=model.consumer.getTokenSecret()%>">
-                <p><input type="submit" value="送信する"></p>
-            </form>
             <br><br>
             <div class="col-md-12">
                 <h2>★ツイート時間帯の傾向★</h2>
@@ -286,93 +279,97 @@
             </div>
             <br><br>
             <div class="col-md-12">
-                <h2>★ワードクラウド★</h2>
-                <script>
-                    var fill = d3.scale.category20();
+                <Div Align="center">
+                    <h2>★ワードクラウド★</h2>
+                    <svg id="test">
+                    </svg>
+                    <script>
+                        var fill = d3.scale.category20();
 
-                    var w = $(window).width(), //横
-                            h = $(window).height(); //縦
+                        var w = $(window).width(), //横
+                                h = $(window).height(); //縦
 
-                    var layout = d3.layout.cloud()
-                            .size([500, 500])
-                            .words([
-                                "Hello", "world", "normally", "you", "want", "more", "words",
-                                "than", "this"].map(function (d) {
-                                return {text: d, size: 10 + Math.random() * 90, test: "haha"};
-                            }))
-                            .padding(5)
-                            .rotate(function () {
-                                return ~~(Math.random() * 2) * 90;
-                            })
-                            .font("Impact")
-                            .fontSize(function (d) {
-                                return d.size;
-                            })
-                            .on("end", draw);
-
-                    layout.start();
-
-                    function draw(words) {
-                        d3.select("body").append("svg")
-                                .attr("width", layout.size()[0])
-                                .attr("height", layout.size()[1])
-                                .append("g")
-                                .attr("transform", "translate(" + layout.size()[0] / 2 + "," + layout.size()[1] / 2 + ")")
-                                .selectAll("text")
-                                .data(words)
-                                .enter().append("text")
-                                .style("font-size", function (d) {
-                                    return d.size + "px";
+                        var layout = d3.layout.cloud()
+                                .size([500, 500])
+                                .words([
+                                    "Hello", "world", "normally", "you", "want", "more", "words",
+                                    "than", "this"].map(function (d) {
+                                    return {text: d, size: 10 + Math.random() * 90, test: "haha"};
+                                }))
+                                .padding(5)
+                                .rotate(function () {
+                                    return ~~(Math.random() * 2) * 90;
                                 })
-                                .style("font-family", "Impact")
-                                .style("fill", function (d, i) {
-                                    return fill(i);
+                                .font("Impact")
+                                .fontSize(function (d) {
+                                    return d.size;
                                 })
-                                .attr("text-anchor", "middle")
-                                .attr("transform", function (d, w, h) {
-                                    return "translate(" + [w / 2 + d.x, h / 2 + d.y] + ")rotate(" + d.rotate + ")";
-                                })
-                                .text(function (d) {
-                                    return d.text;
-                                });
-                    }
-                </script>
+                                .on("end", draw);
+
+                        layout.start();
+
+                        function draw(words) {
+                            d3.select("body").select("#test")
+                                    .attr("width", layout.size()[0])
+                                    .attr("height", layout.size()[1])
+                                    .append("g")
+                                    .attr("transform", "translate(" + layout.size()[0] / 2 + "," + layout.size()[1] / 2 + ")")
+                                    .selectAll("text")
+                                    .data(words)
+                                    .enter().append("text")
+                                    .style("font-size", function (d) {
+                                        return d.size + "px";
+                                    })
+                                    .style("font-family", "Impact")
+                                    .style("fill", function (d, i) {
+                                        return fill(i);
+                                    })
+                                    .attr("text-anchor", "middle")
+                                    .attr("transform", function (d, w, h) {
+                                        return "translate(" + [w / 2 + d.x, h / 2 + d.y] + ")rotate(" + d.rotate + ")";
+                                    })
+                                    .text(function (d) {
+                                        return d.text;
+                                    });
+                        }
+                        document.getElementsByTagName('svg')
+                    </script>
+                </Div>
             </div>
         </div>
         <script type="text/javascript">
-	
-	var obj = {
-		
-		//基本情報が設定できます
-		"base":{
-			color:"white", //文字の色を指定します
-			speed:"normal", //文字が流れるスピードを指定します。slow/fast/normal 
-			interval:"normal",//文字が流れる間隔を指定します。slow/fast/normal
-			font_size:"30px", //フォントのサイズを指定します。
-			loop:true //文字が最後まで流れた後に、繰り返すかどうか　true/false
-			
-		},
-		
-		//ここに、重ねるコメントを登録します。個数制限はありません。
-		"comments":[
-			
-			"ワロスｗｗｗｗｗ",
-			"ｗｗｗｗｗ",
-			"かわいい",	
-			"(*´д`*)はぁはぁ",
-			"なんだこれｗｗｗ",
-			"ねこかわゆす"
-			
-			
-			
-		]
-		
-	};
 
-	nicoscreen.set(obj);
-	nicoscreen.start();
+            var obj = {
+                //基本情報が設定できます
+                "base": {
+                    color: "white", //文字の色を指定します
+                    speed: "normal", //文字が流れるスピードを指定します。slow/fast/normal 
+                    interval: "normal", //文字が流れる間隔を指定します。slow/fast/normal
+                    font_size: "30px", //フォントのサイズを指定します。
+                    loop: true //文字が最後まで流れた後に、繰り返すかどうか　true/false
 
-</script>
+                },
+                //ここに、重ねるコメントを登録します。個数制限はありません。
+                "comments": [
+                    "ワロスｗｗｗｗｗ",
+                    "ｗｗｗｗｗ",
+                    "かわいい",
+                    "(*´д`*)はぁはぁ",
+                    "なんだこれｗｗｗ",
+                    "ねこかわゆす"
+
+
+
+                ]
+
+            };
+
+            nicoscreen.set(obj);
+            nicoscreen.start();
+            var box = document.getElementById('nicoscreen');
+            box.style.border = 'white';
+
+        </script>
         <% }%>
     </body>
 </html>
