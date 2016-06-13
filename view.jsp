@@ -126,24 +126,22 @@
             </li></p>
             <p><li>どんな情報が表示されるの？
                 <ol>
-                    ・ワードクラウド：どの単語をどれだけつぶやいたか表示します。<br>
-                    ・仲のいいユーザーランキング：リプライした回数の多いアカウントをランキングにしました。<br>
+                    ・ワードクラウド：たくさんつぶやいた単語が大きく表示されます。<br>
+                    ・仲のいいユーザーランキング：あなたと仲良しなアカウントをランキングにしました。<br>
                     ・ツイートステータス：あなたのツイートにまつわる様々な情報を表示します。<br>
-                    ・ぼっち度：リプライツイート数を総ツイート数で割った値です。<br>
+                    ・ぼっち度：あなたはついったーぼっちゃーなのか！？。<br>
                     ・フォロー状況：相互フォローなどの情報を表示します。<br>
                 </ol>
             </li></p>
-            <p><li>梅本君に自分のTwitter見られるの嫌なんですけど！
+            <p><li>これって安全なの？梅本君に自分のTwitter見られるの嫌なんですけど！
                 <ol>
                     今回ログインに使っているoauth認証キーは、アプリ終了時にデータベースに残ることはなく、そのまま破棄されます。<br>
-                    また、管理者であってもキーの取得は一切できないので安心です。<br>
-                    通常のサイトでTwitter認証をする場合、一回認証されるとキーはデータベースに保存されてしまいます。注意してください！<br>
+                    よって、管理者であってもキーの取得は一切できないので安心です。<br>
+                    通常のサイトでTwitter認証をする場合、一回認証されるとキーはデータベースに保存されてしまいます。認証は注意してください！<br>
                 </ol>
             </li></p>
-            <p><iframe width="420" height="315" src="https://www.youtube.com/embed/5saz6xHZGas" frameborder="0" allowfullscreen></iframe>
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/qkgbGrAjxwk" frameborder="0" allowfullscreen></iframe></p>
-            <a class="twitter-timeline" data-height="600" href="https://twitter.com/MartinDurst_bot">Tweets by MartinDurst_bot</a> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-            <img src="http://imgur.com/K5aKtIB.png" alt="マーティン" align="bottom">
+            <p><iframe width="420" height="315" src="https://www.youtube.com/embed/5saz6xHZGas" frameborder="0" allowfullscreen></iframe></p>
+            <a class="twitter-timeline" data-height="500" href="https://twitter.com/MartinDurst_bot">Tweets by MartinDurst_bot</a> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script><img src="http://imgur.com/K5aKtIB.png" alt="マーティン" align="bottom">
             <img src="http://imgur.com/K5aKtIB.png" alt="マーティン" align="bottom">
             <img src="http://imgur.com/K5aKtIB.png" alt="マーティン" align="bottom">
             <img src="http://imgur.com/K5aKtIB.png" alt="マーティン" align="bottom">
@@ -209,7 +207,7 @@
                             <p> <font size=4>1日のツイート回数: </font><%=model.getTwipday()%>回
                         </div>
                     </li>
-                    <li><canvas id="twiStatus" height="250" width="500"></canvas><br></li>
+                    <li><canvas id="twiStatus" height="400" width="500"></canvas><br></li>
                     <script>
                         var ctx = document.getElementById("twiStatus");
                         var myRadarChart = new Chart(ctx, {
@@ -225,7 +223,7 @@
                                                 pointBorderColor: "#fff",
                                                 pointHoverBackgroundColor: "#fff",
                                                 pointHoverBorderColor: "rgba(83,224,255,1)",
-                                                data: [65, 59, 90, 81, 56]
+                                                data: [<%=model.getRyouomoi()%>, <%=model.ninki()%>, <%=model.getBotti()%>, <%=model.osha()%>, <%=model.kouyu()%>]
                                         }
                                         ]
                                 },
@@ -233,7 +231,8 @@
                                 scale: {
                                 ticks: {
                                 scaleOverride: true,
-                                        max: 100
+                                        max: 100,
+                                        min: 0
                                 }
                                 },
                                         animation: {
