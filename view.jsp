@@ -114,7 +114,7 @@
                     通常のサイトでTwitter認証をする場合、一回認証されるとキーはデータベースに保存されてしまいます。注意してください！<br>
                 </ol>
             </li></p>
-        <a class="twitter-timeline" href="https://twitter.com/MartinDurst_bot">Tweets by MartinDurst_bot</a> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+        <a class="twitter-timeline" data-height="600" href="https://twitter.com/MartinDurst_bot">Tweets by MartinDurst_bot</a> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
     </div>
     <% } else if (tweeet != null) {%>
     <% model.twi4j();
