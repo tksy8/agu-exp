@@ -73,7 +73,7 @@
                 font-size: 50px;
                 text-shadow: 2px 2px 0px #939393,
                     4px 4px 0px #1c1c1c;
-                color: #616161;
+                color: #ffb342;
                 font-family: 'Century Gothic';
             }
         </style>
@@ -126,7 +126,7 @@
             </div>
             <% } else if (tweeet != null) {%>
             <% model.twi4j();
-        model.tweet4(tweeet);%>
+                model.tweet4(tweeet);%>
             <a class="twitter-timeline" href="https://twitter.com/Umeco_co" data-widget-id="737534269157842944">@Umeco_coさんのツイート</a>
             <script>!function (d, s, id) {
                 var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https';
@@ -168,16 +168,16 @@
                         var myRadarChart = new Chart(ctx, {
                         type: 'radar',
                                 data: {
-                                labels: ["Eating", "Drinking", "Sleeping", "Designing", "Coding", "Cycling", "Running"],
+                                labels: ["フォロバ率", "人気者度", "ぼっち度", "おしゃべり度", "交友度"],
                                         datasets: [
                                         {
-                                        label: "My First dataset",
-                                                backgroundColor: "rgba(179,181,198,0.2)",
-                                                borderColor: "rgba(179,181,198,1)",
-                                                pointBackgroundColor: "rgba(179,181,198,1)",
+                                        label: "あなたのツイッターステータス",
+                                                backgroundColor: "rgba(246,202,255,2)",
+                                                borderColor: "rgba(246,202,255,1)",
+                                                pointBackgroundColor: "rgba(246,202,255,1)",
                                                 pointBorderColor: "#fff",
                                                 pointHoverBackgroundColor: "#fff",
-                                                pointHoverBorderColor: "rgba(179,181,198,1)",
+                                                pointHoverBorderColor: "rgba(246,202,255,1)",
                                                 data: [65, 59, 90, 81, 56, 55, 40]
                                         }
                                         ]
@@ -271,6 +271,76 @@
                             });
                         </script>
                     </li>
+                    <li>
+                        <h2>★あなたのぼっち度★</h2>
+                        <p><font size="5"><%=model.getBotti()%>%</font></p><br>
+                        <canvas id="Botti" height="500" width="1000"></canvas><br>
+                        <script>
+                            var ctx2 = document.getElementById("Botti");
+                            var botti = new Chart(ctx2, {
+                            type: 'pie',
+                                    data: {
+                                    labels: [
+                                            "ひとりごと",
+                                            "リプライ"
+                                    ], //x軸のラベル
+                                            datasets: [
+                                            {
+                                            data: [<%=model.getBotti()%>, 100 -<%=model.getBotti()%>],
+                                                    backgroundColor: [
+                                                            "#36A2EB",
+                                                            "#FF6384"
+                                                    ],
+                                                    borderColor: [
+                                                            "#36A2EB",
+                                                            "#FF6384"
+                                                    ]
+                                            }]
+                                    },
+                                    options: {
+                                    animation: {
+                                    duration: 4000
+                                    }
+                                    }
+                            });
+                        </script>
+                    </li>
+                    <li>
+                        <h2>★フォロー状況★</h2>
+                        <canvas id="Follow" height="500" width="1000"></canvas><br>
+                        <script>
+                            var ctx3 = document.getElementById("Follow");
+                            var follow = new Chart(ctx3, {
+                            type: 'pie',
+                                    data: {
+                                    labels: [
+                                            "片思い",
+                                            "片思われ",
+                                            "両思い"
+                                    ], //x軸のラベル
+                                            datasets: [
+                                            {
+                                            data: [<%=model.kataomoi%>, <%=model.kataomoware%>, <%=model.ryouomoi%>],
+                                                    backgroundColor: [
+                                                            "#FFCE56",
+                                                            "#ccffcc",
+                                                            "#ffb3da"
+                                                    ],
+                                                    borderColor: [
+                                                            "#FFCE56",
+                                                            "#ccffcc",
+                                                            "#ffb3da"
+                                                    ]
+                                            }]
+                                    },
+                                    options: {
+                                    animation: {
+                                    duration: 12000
+                                    }
+                                    }
+                            });
+                        </script>
+                    </li>
                 </div>
 
                 <div class="col-md-12">
@@ -283,7 +353,7 @@
                         <a href='https://twitter.com/<%=model.ranking[i]%>'><%=model.ranking[i]%></a>
                         Score：<%=model.ranknum[i]%><br></font>
                         <% }
-                    model.kaiseki(model.text);%>
+                            model.kaiseki(model.text);%>
                     </div>
                 </div>
 
@@ -330,80 +400,6 @@
                         XX							
                         日
                     </div>
-                </div>
-                <br><br>
-                <div class="col-md-12">
-                    <h2>★あなたのぼっち度★</h2>
-                    <p><font size="5"><%=model.getBotti()%>%</font></p><br>
-                    <canvas id="Botti" height="500" width="1000"></canvas><br>
-                    <script>
-                        var ctx2 = document.getElementById("Botti");
-                        var botti = new Chart(ctx2, {
-                        type: 'pie',
-                                data: {
-                                labels: [
-                                        "ひとりごと",
-                                        "リプライ"
-                                ], //x軸のラベル
-                                        datasets: [
-                                        {
-                                        data: [<%=model.getBotti()%>, 100 -<%=model.getBotti()%>],
-                                                backgroundColor: [
-                                                        "#36A2EB",
-                                                        "#FF6384"
-                                                ],
-                                                borderColor: [
-                                                        "#36A2EB",
-                                                        "#FF6384"
-                                                ]
-                                        }]
-                                },
-                                options: {
-                                animation: {
-                                duration: 4000
-                                }
-                                }
-                        });
-                    </script>
-                </div>
-                <br><br>
-
-                <br><br>
-                <div class="col-md-12">
-                    <h2>★フォロー状況★</h2>
-                    <canvas id="Follow" height="500" width="1000"></canvas><br>
-                    <script>
-                        var ctx3 = document.getElementById("Follow");
-                        var follow = new Chart(ctx3, {
-                        type: 'pie',
-                                data: {
-                                labels: [
-                                        "片思い",
-                                        "片思われ",
-                                        "両思い"
-                                ], //x軸のラベル
-                                        datasets: [
-                                        {
-                                        data: [<%=model.kataomoi%>, <%=model.kataomoware%>, <%=model.ryouomoi%>],
-                                                backgroundColor: [
-                                                        "#FFCE56",
-                                                        "#ccffcc",
-                                                        "#ffb3da"
-                                                ],
-                                                borderColor: [
-                                                        "#FFCE56",
-                                                        "#ccffcc",
-                                                        "#ffb3da"
-                                                ]
-                                        }]
-                                },
-                                options: {
-                                animation: {
-                                duration: 12000
-                                }
-                                }
-                        });
-                    </script>
                 </div>
                 <br><br>
                 <div class="col-md-12">
@@ -465,7 +461,6 @@
                 </div>
             </div>
             <script type="text/javascript">
-
                         var obj = {
                         //基本情報が設定できます
                         "base": {
@@ -474,7 +469,6 @@
                                 interval: "normal", //文字が流れる間隔を指定します。slow/fast/normal
                                 font_size: "30px", //フォントのサイズを指定します。
                                 loop: true //文字が最後まで流れた後に、繰り返すかどうか　true/false
-
                         },
                                 //ここに、重ねるコメントを登録します。個数制限はありません。
                                 "comments": [
@@ -487,17 +481,12 @@
                                 "<%=model.getWords(i)%>",
                 <%}%>
                                 "うめつい"
-
-
-
                                 ]
-
                         };
                 nicoscreen.set(obj);
                 nicoscreen.start();
                 var box = document.getElementById('nicoscreen');
                 box.style.border = 'white';
-
             </script>
             <% }%>
             </body>
