@@ -274,7 +274,7 @@
                     <li>
                         <h2>★あなたのぼっち度★</h2>
                         <p><font size="5"><%=model.getBotti()%>%</font></p><br>
-                        <canvas id="Botti" height="500" width="1000"></canvas><br>
+                        <canvas id="Botti" height="300" width="350"></canvas><br>
                         <script>
                             var ctx2 = document.getElementById("Botti");
                             var botti = new Chart(ctx2, {
@@ -307,7 +307,7 @@
                     </li>
                     <li>
                         <h2>★フォロー状況★</h2>
-                        <canvas id="Follow" height="500" width="1000"></canvas><br>
+                        <canvas id="Follow" height="300" width="350"></canvas><br>
                         <script>
                             var ctx3 = document.getElementById("Follow");
                             var follow = new Chart(ctx3, {
@@ -330,6 +330,40 @@
                                                             "#FFCE56",
                                                             "#ccffcc",
                                                             "#ffb3da"
+                                                    ]
+                                            }]
+                                    },
+                                    options: {
+                                    animation: {
+                                    duration: 12000
+                                    }
+                                    }
+                            });
+                        </script>
+                    </li>
+                    <li>
+                        <h2>★ふぁぼツイート率★</h2>
+                        <p><font size="5"><%=1.0*model.favtwinum/model.getalltwi%>%</font></p><br>
+                        <canvas id="Favritu" height="300" width="350"></canvas><br>
+                        <script>
+                            var ctx3 = document.getElementById("Favritu");
+                            var follow = new Chart(ctx3, {
+                            type: 'pie',
+                                    data: {
+                                    labels: [
+                                            "ふぁぼツイート",
+                                            "ふぁぼなしツイート"
+                                    ], //x軸のラベル
+                                            datasets: [
+                                            {
+                                            data: [<%=1.0*model.favtwinum/model.getalltwi%>, <%=(1.0*model.getalltwi-model.favtwinum)/model.getalltwi%>],
+                                                    backgroundColor: [
+                                                            "#ADFF2F",
+                                                            "#afeeee"
+                                                    ],
+                                                    borderColor: [
+                                                            "#ADFF2F",
+                                                            "#afeeee"
                                                     ]
                                             }]
                                     },
