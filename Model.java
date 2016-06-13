@@ -44,6 +44,7 @@ public class Model {
     public int[] ranknum = new int[5];
     public List<String> words = new ArrayList<String>();
     public List<Integer> wnum = new ArrayList<Integer>();
+    public List<Status> favlist = new ArrayList<Status>();
     public String rtxt = "";
     public String[] pics = new String[5];
     private double ronryalone;
@@ -51,6 +52,7 @@ public class Model {
     private double twipday, twimean;
     private User myuser;
     public int kataomoi,kataomoware,ryouomoi;
+    public int favtwinum=0,favallnum=0,getalltwi;
 
     public Model() {
         for (int i = 0; i < 24; i++) {
@@ -113,6 +115,11 @@ public class Model {
             Paging page = new Paging(i, 200);
             myRes = twitter.getUserTimeline(page);
             for (Status state : myRes) {
+                if (state.isFavorited()){
+                    favlist.add(state);
+                    favtwinum+=1;
+                    favallnum+=state.getFavoriteCount();
+                }
                 if (flag == 0) {
                     flag = 1;
                     now.setTime(state.getCreatedAt());
@@ -157,6 +164,18 @@ public class Model {
         twipday = 1.0 * alltwi / getDiffDay(now, old);
         twimean = twilength / alltwi;
         ronryalone = (alltwi - repnum) / alltwi * 100.0;
+        getalltwi=(int)alltwi;
+        
+        Status tmplate;
+        for (int i=favlist.size();i>1;--i){
+            for (int j=0;j<i-1;j++){
+                if(favlist.get(j).getFavoriteCount()<favlist.get(j+1).getFavoriteCount()){
+                    tmplate=favlist.get(j);
+                    favlist.set(j, favlist.get(j+1));
+                    favlist.set(j+1, tmplate);
+                }
+            }
+        }
     }
 
     public void printUser() {
