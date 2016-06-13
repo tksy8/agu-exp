@@ -154,18 +154,42 @@
                     ようこそ！ <%=model.getMyname()%>@<%=model.getScname()%> !
                 </div>
                 <div class="rader">
-                    <h2>あなたの基本ステータス</h2>
+                   <h2>あなたの基本ステータス</h2>
                     フォロー数：  <%=model.getFnum()%> 人<br>
                     フォロワー数：　<%=model.getFednum()%> 人<br>
                     ついったーを始めてからの総ツイート数：  <%=model.getAllnum()%> 回<br>
                     ついったー歴： <%=model.getHist()%> 日<br>
-                    <li>あなたのついったースキル測定<br><br>
-                        1日の平均ツイート回数：<%=model.getTwipday()%>
+                    <br><br>
+                    <li>
+                        <h2>★あなたのついったースキル測定★</h2>
+                        <div class="col-sm-3 col-xs-6">
+                            <p> <font size=4>最も活発な時間: </font> XX 時
+                        </div>
+                        <div class="col-sm-3 col-xs-6">
+                            <p> <font size=4>ひとりごと率: </font> XX %
+                        </div>
+                        <div class="col-sm-3 col-xs-6">
+                            <p> <font size=4>Twitter 歴: </font> XX 日
+                        </div>
+                        <div class="col-sm-3 col-xs-6">
+                            <p> <font size=4>平均文字数: </font><%=model.getTwimean()%>回
+                        </div>
+                        <div class="col-sm-3 col-xs-6">
+                            <p> <font size=4>1日平均文字数: </font> XX 時
+                        </div>
+                        <div class="col-sm-3 col-xs-6">
+                            <p> <font size=4>累計文字数: </font> XX %
+                        </div>
+                        <div class="col-sm-3 col-xs-6">
+                            <p> <font size=4>平均ツイート間隔: </font> XX 日
+                        </div>
+                        <div class="col-sm-3 col-xs-6">
+                            <p> <font size=4>1日のツイート回数: </font><%=model.getTwipday()%>回
+                        </div>
                     </li>
-
-                    <li><canvas id="PleaseName" height="250" width="500"></canvas><br></li>
+                    <li><canvas id="twiStatus" height="250" width="500"></canvas><br></li>
                     <script>
-                        var ctx = document.getElementById("PleaseName");
+                        var ctx = document.getElementById("twiStatus");
                         var myRadarChart = new Chart(ctx, {
                         type: 'radar',
                                 data: {
@@ -173,13 +197,13 @@
                                         datasets: [
                                         {
                                         label: "あなたのツイッターステータス",
-                                                backgroundColor: "rgba(246,202,255,2)",
-                                                borderColor: "rgba(246,202,255,1)",
-                                                pointBackgroundColor: "rgba(246,202,255,1)",
+                                                backgroundColor: "rgba(83,224,255,0.5)",
+                                                borderColor: "rgba(83,224,255,1)",
+                                                pointBackgroundColor: "rgba(83,224,255,1)",
                                                 pointBorderColor: "#fff",
                                                 pointHoverBackgroundColor: "#fff",
-                                                pointHoverBorderColor: "rgba(246,202,255,1)",
-                                                data: [65, 59, 90, 81, 56, 55, 40]
+                                                pointHoverBorderColor: "rgba(83,224,255,1)",
+                                                data: [65, 59, 90, 81, 56]
                                         }
                                         ]
                                 },
@@ -390,51 +414,6 @@
                         Score：<%=model.ranknum[i]%><br></font>
                         <% }
                             model.kaiseki(model.text);%>
-                    </div>
-                </div>
-
-                <br><br>
-                <div class="col-md-12">
-                    <h2>★あなたのツイートステータス★</h2>
-                    <div class="col-sm-3 col-xs-6">
-                        <h4>1日のツイート回数</h4>
-                        <%=model.getTwipday()%>
-                        回
-                    </div>
-                    <div class="col-sm-3 col-xs-6">
-                        <h4>最も活発な時間</h4>
-                        XX							
-                        時
-                    </div>
-                    <div class="col-sm-3 col-xs-6">
-                        <h4>ひとりごと率</h4>
-                        XX							
-                        %
-                    </div>
-                    <div class="col-sm-3 col-xs-6">
-                        <h4>Twitter 歴</h4>
-                        XX							
-                        日
-                    </div>
-                    <div class="col-sm-3 col-xs-6">
-                        <h4>平均文字数</h4>
-                        <%=model.getTwimean()%>
-                        回
-                    </div>
-                    <div class="col-sm-3 col-xs-6">
-                        <h4>1日平均文字数</h4>
-                        XX							
-                        時
-                    </div>
-                    <div class="col-sm-3 col-xs-6">
-                        <h4>累計文字数</h4>
-                        XX							
-                        %
-                    </div>
-                    <div class="col-sm-3 col-xs-6">
-                        <h4>平均ツイート間隔</h4>
-                        XX							
-                        日
                     </div>
                 </div>
                 <br><br>
