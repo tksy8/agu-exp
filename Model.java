@@ -51,7 +51,7 @@ public class Model {
     public int[] timetwi = new int[24];
     private double twipday, twimean;
     private User myuser;
-    public int kataomoi,kataomoware,ryouomoi;
+    public int kataomoi,kataomoware,ryouomoi,reppnum=0;
     public int favtwinum=0,favallnum=0,getalltwi;
 
     public Model() {
@@ -145,6 +145,7 @@ public class Model {
                         continue;
                     }
 
+                    reppnum+=1;
                     if (friend.contains(m.group())) {
                         fnum.set(friend.indexOf(m.group()), fnum.get(friend.indexOf(m.group())) + 1);
 
@@ -287,9 +288,13 @@ public class Model {
     public String getBotti() {
         return String.format("%.2f", ronryalone);
     }
+    
 
     public String getTwimean() {
         return String.format("%.2f", twimean);
+    }
+    public String osha() {
+        return String.format("%.2f", 100.0*twimean/144*twipday);
     }
 
     public String getTwipday() {
@@ -429,5 +434,11 @@ public class Model {
     }
     public String getRyouomoi(){
         return String.format("%.2f", 100.0*ryouomoi/Integer.parseInt(getFnum()));
+    }
+    public String ninki(){
+        return String.valueOf(100.0*myuser.getFollowersCount()/myuser.getFriendsCount());
+    }
+    public String kouyu(){
+        return String.valueOf(100.0*(reppnum-ranknum[0])/reppnum);
     }
 }
