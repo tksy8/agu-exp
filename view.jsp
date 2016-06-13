@@ -2,7 +2,7 @@
 
 
 <%
-    twi.Model model = (twi.Model) request.getAttribute("model"); 
+    twi.Model model = (twi.Model) request.getAttribute("model");
     model = new twi.Model();
     String token = "";
     String stoken = "";
@@ -154,7 +154,7 @@
                     ようこそ！ <%=model.getMyname()%>@<%=model.getScname()%> !
                 </div>
                 <div class="rader">
-                   <h2>あなたの基本ステータス</h2>
+                    <h2>あなたの基本ステータス</h2>
                     フォロー数：  <%=model.getFnum()%> 人<br>
                     フォロワー数：　<%=model.getFednum()%> 人<br>
                     ついったーを始めてからの総ツイート数：  <%=model.getAllnum()%> 回<br>
@@ -208,9 +208,12 @@
                                         ]
                                 },
                                 options: {
-                                animation: {
-                                duration: 20000
-                                }
+                                ticks: {
+                                maxRotation: 100
+                                },
+                                        animation: {
+                                        duration: 20000
+                                        }
                                 }
                         });
                     </script>
