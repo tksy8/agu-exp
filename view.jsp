@@ -51,8 +51,21 @@
             .col1{
                 width: 100%;
                 margin: 0 auto;
+                text-align:center;
             }
             .col1 li{
+                display:inline-block;
+                border:1px solid #ccc;
+                padding:5px 10px;
+                text-align:center;
+                background: #ffffff;
+            }
+            .col2{
+                width: 100%;
+                margin: 0 auto;
+                text-align:center;
+            }
+            .col2 li{
                 display:inline-block;
                 border:1px solid #ccc;
                 padding:5px 10px;
@@ -62,13 +75,13 @@
             .rader{
                 width: 100%;
                 margin: 0 auto;
+                text-align:center;
             }
             .rader li{
                 display:inline-block;
                 border:1px solid #ccc;
                 padding:5px 10px;
                 background: #ffffff;
-                text-align:center;
             }
             .welcome{
                 font-size: 50px;
@@ -76,6 +89,18 @@
                     4px 4px 0px #1c1c1c;
                 color: #ffb342;
                 font-family: 'Century Gothic';
+            }
+            .friend{
+                width: 100%;
+                margin: 0 auto;
+                text-align:center;
+            }
+            .friend li{
+                display:inline-block;
+                border:1px solid #ccc;
+                padding:5px 10px;
+                text-align:center;
+                background: #ffffff;
             }
         </style>
     </head>
@@ -299,6 +324,8 @@
                             });
                         </script>
                     </li>
+                </div>
+                <div class='col2'>
                     <li>
                         <h2>★あなたのぼっち度★</h2>
                         <p><font size="5"><%=model.getBotti()%>%</font></p><br>
@@ -335,7 +362,7 @@
                     </li>
                     <li>
                         <h2>★フォロー状況★</h2>
-                        <p><font size="5">両思い率：<%=model.getRyouomoi()%>%</font></p><br>
+                        <p><font size="5">フォロバ率：<%=model.getRyouomoi()%>%</font></p><br>
                         <canvas id="Follow" height="300" width="350"></canvas><br>
                         <script>
                             var ctx3 = document.getElementById("Follow");
@@ -406,9 +433,9 @@
                     </li>
                 </div>
 
-                <div class="col-md-12">
-                    <h2>★あなたと仲の良いユーザーランキング★</h2>
-                    <Div Align="center">
+                <div class="friend">
+                    <li>
+                        <h2>★あなたと仲の良いユーザーランキング★</h2>
                         <% for (int i = 0; i < 5; i++) {%>
                         <font size=<%=7 - i%> color="#99ff00">
                         <%=i + 1%>位：
@@ -417,64 +444,73 @@
                         Score：<%=model.ranknum[i]%><br></font>
                         <% }
                             model.kaiseki(model.text);%>
-                    </div>
+                    </li>
+                    <li>
+                        <h2>★ふぁぼ獲得ついーとTOP3★</h2>
+                        <blockquote class="twitter-tweet" data-lang="ja"><p lang="ja" dir="ltr"><%=model.favlist.get(0).getText()%></p>&mdash; <%=model.getMyname()%> (@<%=model.getScname()%>) <a href="https://twitter.com/Umeco_co/status/<%=model.favlist.get(0).getId()%>"><%=model.favlist.get(0).getCreatedAt().getYear()%>年<%=model.favlist.get(0).getCreatedAt().getMonth()%>月<%=model.favlist.get(0).getCreatedAt().getDay()%>日</a></blockquote>
+                        <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+                        <blockquote class="twitter-tweet" data-lang="ja"><p lang="ja" dir="ltr"><%=model.favlist.get(1).getText()%></p>&mdash; <%=model.getMyname()%> (@<%=model.getScname()%>) <a href="https://twitter.com/Umeco_co/status/<%=model.favlist.get(1).getId()%>"><%=model.favlist.get(1).getCreatedAt().getYear()%>年<%=model.favlist.get(1).getCreatedAt().getMonth()%>月<%=model.favlist.get(1).getCreatedAt().getDay()%>日</a></blockquote>
+                        <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+                        <blockquote class="twitter-tweet" data-lang="ja"><p lang="ja" dir="ltr"><%=model.favlist.get(2).getText()%></p>&mdash; <%=model.getMyname()%> (@<%=model.getScname()%>) <a href="https://twitter.com/Umeco_co/status/<%=model.favlist.get(2).getId()%>"><%=model.favlist.get(2).getCreatedAt().getYear()%>年<%=model.favlist.get(2).getCreatedAt().getMonth()%>月<%=model.favlist.get(2).getCreatedAt().getDay()%>日</a></blockquote>
+                        <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+                    </li>
                 </div>
                 <br><br>
                 <div class="col-md-12">
                     <script>
-                        var fill = d3.scale.category20();
-                        var words = [
+                            var fill = d3.scale.category20();
+                            var words = [
                         <% for (int i = 0; i < model.words.size(); i++) {%>
-                        {"text":"<%=model.getWords(i)%>", "size": <%=model.wnum.get(i)%>},
+                            {"text":"<%=model.getWords(i)%>", "size": <%=model.wnum.get(i)%>},
                         <%}%>
-                        {"text":"うめつい", "size":1}
-                        ];
-                        var countMax = d3.max(words, function(d){return d.size});
-                        var sizeScale = d3.scale.linear().domain([0, countMax]).range([10, 100]);
-                        var colorScale = d3.scale.category20();
-                        words = words.map(function(d){
-                        return {
-                        text:d.text,
-                                size:sizeScale(d.size)
-                        };
-                        });
-                        var layout = d3.layout.cloud()
-                                .size([800, 500])
-                                .words(words)
-                                .rotate(function () {
-                                return ~~(Math.random() * 2) * 90;
-                                })
-                                .font("Impact")
-                                .fontSize(function (d) {
-                                return d.size;
-                                })
-                                .on("end", draw);
-                        layout.start();
-                        function draw(words) {
-                        d3.select("body").select("#test")
-                                .attr("width", layout.size()[0])
-                                .attr("height", layout.size()[1])
-                                .append("g")
-                                .attr("transform", "translate(400,250)")
-                                .selectAll("text")
-                                .data(words)
-                                .enter().append("text")
-                                .style("font-size", function (d) {
-                                return d.size + "px";
-                                })
-                                .style("font-family", "Impact")
-                                .style("fill", function (d, i) {
-                                return fill(i);
-                                })
-                                .attr("text-anchor", "middle")
-                                .attr("transform", function (d) {
-                                return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
-                                })
-                                .text(function (d) {
-                                return d.text;
-                                });
-                        }
-                        document.getElementsByTagName('svg')
+                            {"text":"うめつい", "size":1}
+                            ];
+                            var countMax = d3.max(words, function(d){return d.size});
+                            var sizeScale = d3.scale.linear().domain([0, countMax]).range([10, 100]);
+                            var colorScale = d3.scale.category20();
+                            words = words.map(function(d){
+                            return {
+                            text:d.text,
+                                    size:sizeScale(d.size)
+                            };
+                            });
+                            var layout = d3.layout.cloud()
+                                    .size([800, 500])
+                                    .words(words)
+                                    .rotate(function () {
+                                    return ~~(Math.random() * 2) * 90;
+                                    })
+                                    .font("Impact")
+                                    .fontSize(function (d) {
+                                    return d.size;
+                                    })
+                                    .on("end", draw);
+                            layout.start();
+                            function draw(words) {
+                            d3.select("body").select("#test")
+                                    .attr("width", layout.size()[0])
+                                    .attr("height", layout.size()[1])
+                                    .append("g")
+                                    .attr("transform", "translate(400,250)")
+                                    .selectAll("text")
+                                    .data(words)
+                                    .enter().append("text")
+                                    .style("font-size", function (d) {
+                                    return d.size + "px";
+                                    })
+                                    .style("font-family", "Impact")
+                                    .style("fill", function (d, i) {
+                                    return fill(i);
+                                    })
+                                    .attr("text-anchor", "middle")
+                                    .attr("transform", function (d) {
+                                    return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+                                    })
+                                    .text(function (d) {
+                                    return d.text;
+                                    });
+                            }
+                            document.getElementsByTagName('svg')
                     </script>
                 </div>
             </div>
