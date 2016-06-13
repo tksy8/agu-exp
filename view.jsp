@@ -308,6 +308,7 @@
                     </li>
                     <li>
                         <h2>★フォロー状況★</h2>
+                        <p><font size="5">両思い率：<%=model.getRyouomoi()%>%</font></p><br>
                         <canvas id="Follow" height="300" width="350"></canvas><br>
                         <script>
                             var ctx3 = document.getElementById("Follow");
@@ -344,7 +345,7 @@
                     </li>
                     <li>
                         <h2>★ふぁぼツイート率★</h2>
-                        <p><font size="5"><%=1.0*model.favtwinum/model.getalltwi%>%</font></p><br>
+                        <p><font size="5"><%=model.getFavritu()%>%</font></p><br>
                         <canvas id="Favritu" height="300" width="350"></canvas><br>
                         <script>
                             var ctx3 = document.getElementById("Favritu");
@@ -357,7 +358,7 @@
                                     ], //x軸のラベル
                                             datasets: [
                                             {
-                                            data: [<%=1.0*model.favtwinum/model.getalltwi%>, <%=(1.0*model.getalltwi-model.favtwinum)/model.getalltwi%>],
+                                            data: [<%=model.getFavritu()%>, <%=model.getNotFav()%>],
                                                     backgroundColor: [
                                                             "#ADFF2F",
                                                             "#afeeee"
