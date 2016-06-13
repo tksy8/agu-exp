@@ -115,7 +115,8 @@ public class Model {
             Paging page = new Paging(i, 200);
             myRes = twitter.getUserTimeline(page);
             for (Status state : myRes) {
-                if (state.isFavorited()){
+                if (state.getFavoriteCount()>0 && !state.getText().contains("RT")){
+                    System.out.println(state.getText());
                     favlist.add(state);
                     favtwinum+=1;
                     favallnum+=state.getFavoriteCount();
