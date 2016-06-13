@@ -48,6 +48,7 @@ public class Model {
     private double ronryalone;
     public int [] timetwi=new int[24];
     private double twipday,twimean;
+    private User myuser;
     
     public Model(){
         for (int i=0;i<24;i++)
@@ -101,6 +102,7 @@ public class Model {
         int flag=0;
         Status laststate=null;
         double twilength=0;
+        myuser = twitter.verifyCredentials();
         
         Calendar now=Calendar.getInstance(), old=Calendar.getInstance();
         double alltwi=0, repnum=0;
@@ -294,5 +296,29 @@ public class Model {
     }
     public String getWords(int i){
         return words.get(i);
+    }
+    public String getMyname(){
+        return myuser.getName();
+    }
+    public String getScname(){
+        return myuser.getScreenName();
+    }
+    public String getHist(){
+        Calendar today=Calendar.getInstance(),created=Calendar.getInstance();
+        created.setTime(myuser.getCreatedAt());
+        int days = getDiffDay(today,created);
+        return String.valueOf(days);
+    }
+    public String getAllnum(){
+        return String.valueOf(myuser.getStatusesCount());
+    }
+    public String getFavnum(){
+        return String.valueOf(myuser.getFavouritesCount());
+    }
+    public String getFnum(){
+        return String.valueOf(myuser.getFriendsCount());
+    }
+    public String getFednum(){
+        return String.valueOf(myuser.getFollowersCount());
     }
 }
