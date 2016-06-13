@@ -420,4 +420,13 @@ public class Model {
         kataomoware=Kataomoware.size();
         ryouomoi=Ryouomoi.size();
     }
+    public String getFavritu(){
+        return String.format("%.2f", 100.0*favtwinum/getalltwi);
+    }
+    public String getNotFav(){
+        return String.format("%.2f", 100.0*(getalltwi-favtwinum)/getalltwi);
+    }
+    public String getRyouomoi(){
+        return String.format("%.2f", 100.0*ryouomoi/Integer.parseInt(getFnum()));
+    }
 }
