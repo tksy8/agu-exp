@@ -197,13 +197,10 @@
                             <p> <font size=4>Twitter 歴: </font> XX 日
                         </div>
                         <div class="col-sm-3 col-xs-6">
-                            <p> <font size=4>平均文字数: </font><%=model.getTwimean()%>回
+                            <p> <font size=4>平均文字数: </font><%=model.getTwimean()%>字
                         </div>
                         <div class="col-sm-3 col-xs-6">
-                            <p> <font size=4>1日平均文字数: </font> XX 時
-                        </div>
-                        <div class="col-sm-3 col-xs-6">
-                            <p> <font size=4>累計文字数: </font> XX %
+                            <p> <font size=4>1日平均文字数: </font> XX 字
                         </div>
                         <div class="col-sm-3 col-xs-6">
                             <p> <font size=4>平均ツイート間隔: </font> XX 日
@@ -233,13 +230,17 @@
                                         ]
                                 },
                                 options: {
+                                scale: {
                                 ticks: {
-                                maxRotation: 100
+                                scaleOverride: true,
+                                        max: 100
+                                }
                                 },
                                         animation: {
-                                        duration: 20000
+                                        duration:10000
                                         }
                                 }
+
                         });
                     </script>
                 </div>
@@ -354,7 +355,7 @@
                                     },
                                     options: {
                                     animation: {
-                                    duration: 4000
+                                    duration: 12000
                                     }
                                     }
                             });
