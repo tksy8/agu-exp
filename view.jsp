@@ -114,7 +114,7 @@
                     通常のサイトでTwitter認証をする場合、一回認証されるとキーはデータベースに保存されてしまいます。注意してください！<br>
                 </ol>
             </li></p>
-        <a class="twitter-timeline" data-height="600" href="https://twitter.com/MartinDurst_bot">Tweets by MartinDurst_bot</a> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+            <a class="twitter-timeline" data-height="600" href="https://twitter.com/MartinDurst_bot">Tweets by MartinDurst_bot</a> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
     </div>
     <% } else if (tweeet != null) {%>
     <% model.twi4j();
@@ -145,8 +145,8 @@
         </div>
         <div class="rader">
             <h2>あなたの基本ステータス</h2>
-            　　　　　　　　　　　　　フォロー数：  <%=model.getFnum()%> 人<br>
-                              　フォロワー数：　<%=model.getFednum()%> 人<br>
+            フォロー数：  <%=model.getFnum()%> 人<br>
+            フォロワー数：　<%=model.getFednum()%> 人<br>
             ついったーを始めてからの総ツイート数：  <%=model.getAllnum()%> 回<br>
             ついったー歴： <%=model.getHist()%> 日<br>
             <li>あなたのついったースキル測定<br><br>
@@ -170,16 +170,6 @@
                                         pointHoverBackgroundColor: "#fff",
                                         pointHoverBorderColor: "rgba(179,181,198,1)",
                                         data: [65, 59, 90, 81, 56, 55, 40]
-                                },
-                                {
-                                label: "My Second dataset",
-                                        backgroundColor: "rgba(255,99,132,0.2)",
-                                        borderColor: "rgba(255,99,132,1)",
-                                        pointBackgroundColor: "rgba(255,99,132,1)",
-                                        pointBorderColor: "#fff",
-                                        pointHoverBackgroundColor: "#fff",
-                                        pointHoverBorderColor: "rgba(255,99,132,1)",
-                                        data: [28, 48, 40, 19, 96, 27, 100]
                                 }
                                 ]
                         },
